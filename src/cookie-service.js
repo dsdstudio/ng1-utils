@@ -1,26 +1,28 @@
 angular.module('app').service('CookieService', CookieService);
 
-function CookieService(phConfig) {
-    function addCookie(k, v) {
-        const t0 = encodeURIComponent(k) + '=' + encodeURIComponent(v) + '; domain=' + phConfig.serverDomain + '; path=/;';
+function CookieService() {
+    function addCookie(domain, k, v) {
+        const t0 = encodeURIComponent(k) + '=' + encodeURIComponent(v) + '; domain=' + domain + '; path=/;';
         document.cookie = t0;
     }
-    function removeCookie(k, v) {
-        document.cookie = encodeURIComponent(k) + '=' + encodeURIComponent(v) + '; domain=' + phConfig.serverDomain + '; path=/; expires=' + new Date(0).toGMTString();
+    function removeCookie(domain, k, v) {
+        document.cookie = encodeURIComponent(k) + '=' + encodeURIComponent(v) + '; domain=' + domain + '; path=/; expires=' + new Date(0).toGMTString();
     }
     function getCookie(k) {
-        let cookieFields = document.cookie.split('; ');
-        let i = cookieFields.length;
-        let cookies = {};
+		var cookieFields,i,cookies;
+
+        cookieFields = document.cookie.split('; '),
+        i = cookieFields.length,
+        cookies = {};
         while(i--) {
-            let fieldTokens = cookieFields[i].split('=');
+            fieldTokens = cookieFields[i].split('=');
             cookies[fieldTokens[0]] = fieldTokens[1];
         }
         return cookies[k];
     }
     return {
-        remove:removeCookie,
-        put:addCookie,
-        get:getCookie
+        removeCookie:removeCookie,
+        addCookie:addCookie,
+        getCookie:getCookie
     };
 }
